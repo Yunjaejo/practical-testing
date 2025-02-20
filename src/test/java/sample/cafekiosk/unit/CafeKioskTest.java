@@ -6,14 +6,14 @@ import sample.cafekiosk.unit.beverage.Beverage;
 import sample.cafekiosk.unit.beverage.Latte;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CafeKioskTest {
 
     @Test
     void add() {
         CafeKiosk cafeKiosk = new CafeKiosk();
-        cafeKiosk.add(new Americano());
+        cafeKiosk.add(new Americano(), 1);
 
         assertThat(cafeKiosk.getBeverages()).hasSize(1);
         assertThat(cafeKiosk.getBeverages().get(0).getName()).isEqualTo("Americano");
@@ -21,11 +21,19 @@ class CafeKioskTest {
     }
 
     @Test
+    void addZeroBeverages() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+
+        assertThatThrownBy(() -> cafeKiosk.add(new Americano(), 0))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     void remove() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         Beverage americano = new Americano();
 
-        cafeKiosk.add(americano);
+        cafeKiosk.add(americano, 1);
         assertThat(cafeKiosk.getBeverages()).hasSize(1);
 
         cafeKiosk.remove(americano);
@@ -38,8 +46,8 @@ class CafeKioskTest {
         Beverage americano = new Americano();
         Beverage latte = new Latte();
 
-        cafeKiosk.add(americano);
-        cafeKiosk.add(latte);
+        cafeKiosk.add(americano, 1);
+        cafeKiosk.add(latte, 1);
         assertThat(cafeKiosk.getBeverages()).hasSize(2);
 
         cafeKiosk.clear();

@@ -13,8 +13,13 @@ public class CafeKiosk {
 
     private final List<Beverage> beverages = new ArrayList<>();
 
-    public void add(Beverage beverage) {
-        beverages.add(beverage);
+    public void add(Beverage beverage, int count) {
+        if (count <= 0) {
+            throw new IllegalArgumentException("음료는 한 잔 이상 주문 가능합니다");
+        }
+        for (int i = 0; i < count; i++) {
+            beverages.add(beverage);
+        }
     }
 
     public void remove(Beverage beverage) {
